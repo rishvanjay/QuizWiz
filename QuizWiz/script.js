@@ -41,6 +41,13 @@ function onLogin() {
         // Handle Errors here.
         var errorCode = error.code;
         var errorMessage = error.message;
+        console.log(error);
+        console.log(errorMessage);
+
+        if (errorCode == 'auth/email-already-in-use') {
+            alert('The email is aleady in use. Try a new email.');
+          }
+
         // ...
       });
 

@@ -1,3 +1,17 @@
+var firebase = require("firebase");
+
+var config = {
+    apiKey: "AIzaSyCVPd3bcv8m0zyutS12R-YznD-huOEH_S4",
+    authDomain: "quizwiz-dda60.firebaseapp.com",
+    databaseURL: "https://quizwiz-dda60.firebaseio.com",
+    projectId: "quizwiz-dda60",
+    storageBucket: "quizwiz-dda60.appspot.com",
+    messagingSenderId: "429794970466"
+  };
+  firebase.initializeApp(config);
+
+
+
 // Get the modal
 var modal = document.getElementById('id01');
 
@@ -20,8 +34,17 @@ function onLogin() {
     console.log("logging in");
     console.log(document.getElementById("uname").value);
     console.log(document.getElementById("pwd").value);
-    
+    var email = document.getElementById("uname").value;
+    var password = document.getElementById("pwd").value;
+    firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // ...
+      });
 
 }
+
+
 
 window.onload = windowLoad;

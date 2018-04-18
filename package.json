@@ -17,6 +17,6 @@
   },
   "homepage": "https://github.com/rishvanjay/QuizWiz#readme",
   "dependencies": {
-    "firebase": "^4.12.1"
+    "firebase": "^4.12.1",
   }
 }

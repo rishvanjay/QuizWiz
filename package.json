@@ -1,0 +1,22 @@
+{
+  "name": "quizwiz",
+  "version": "1.0.0",
+  "description": "A webapp for trivia quiz",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rishvanjay/QuizWiz.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rishvanjay/QuizWiz/issues"
+  },
+  "homepage": "https://github.com/rishvanjay/QuizWiz#readme",
+  "dependencies": {
+    "firebase": "^4.12.1"
+  }
+}

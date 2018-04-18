@@ -150,6 +150,16 @@ span.psw {
       <label>
         <input type="checkbox" checked="checked" name="remember"> Remember me
       </label>
+      <script>
+      var firebase = require("firebase");
+
+      firebase.auth().createUserWithEmailAndPassword("uname", "psw").catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // ...
+      });
+      </script>
     </div>
 
     <div class="container" style="background-color:#f1f1f1">

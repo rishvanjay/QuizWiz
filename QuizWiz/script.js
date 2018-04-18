@@ -1,5 +1,6 @@
-var firebase = require("firebase");
 
+
+    
 var config = {
     apiKey: "AIzaSyCVPd3bcv8m0zyutS12R-YznD-huOEH_S4",
     authDomain: "quizwiz-dda60.firebaseapp.com",

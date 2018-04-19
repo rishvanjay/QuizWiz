@@ -26,10 +26,28 @@ button:hover {
 }
 
 /* Extra styles for the cancel button */
+
 .cancelbtn {
     width: auto;
     padding: 10px 18px;
     background-color: #f44336;
+}
+
+#forgotPass{
+    width: 20%;
+    float: right;
+    padding: 10px 18px;
+    background-color: #f44336;
+}
+
+#login{
+    width: 30%;
+    margin-left: 35%;
+}
+
+#welcome{
+    margin-left: 30%;
+    font-size: 50px;
 }
 
 /* Center the image and position the close button */

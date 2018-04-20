@@ -10,9 +10,31 @@
     </head>
     <body>
     	<div id="welcome"></div>
-    	<script type="text/javascript">
-
-    		
-    	</script>
+        <button id="signOut" onclick="signOut()">Sign Out</button>
+        <div id="score0">
+            <label id="score1"><b>Your Score</b></label>
+            <label id="score2"><b></b></label>
+        </div>
+        <button id="startQuiz" onclick="startQuiz()">Start Quiz</button>
+        <div id="quizModal" class="modal">
+            <div class="modal-content animate">
+                <b>Question <div id="qNo"></div></b>
+                <b>Score <div id="score">0</div></b>
+                <div class="container">
+                    <label id="question"></label>
+                </div>
+                <form action="">
+                    <input type="radio" name="options" value="1" class="radio"><div id="opt1" class="radioOpt"></div><br>
+                    <input type="radio" name="options" value="2" class="radio"><div id="opt2" class="radioOpt"></div><br>
+                    <input type="radio" name="options" value="3" class="radio"><div id="opt3" class="radioOpt"></div><br>
+                    <input type="radio" name="options" value="4" class="radio"><div id="opt4" class="radioOpt"></div><br>
+                </form>
+                <div class="container" style="background-color:#f1f1f1">
+                    <button type="button" onclick="document.getElementById('quizModal').style.display='none'" class="cancelbtn">Close</button>
+                    <button type="button" onclick="next()" class="cancelbtn">Submit</button>
+                </div>
+            </div>  
+        </div>
     	<script src="./script.js"></script>
     </body>
+</html>

@@ -93,6 +93,7 @@ function onCreate() {
         .catch(function(error) {
             console.log("display name NOT updated");
         });
+        modal2.style.display = "none";
         //window.location.href = "main.html";
     })
     .catch(function(error) {

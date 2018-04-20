@@ -19,7 +19,7 @@ var modal2 = document.getElementById('id02');
 var modal3 = document.getElementById('id03');
 var modal4 = document.getElementById('id04');
 
-//var cur = 0;
+var cur = null;
 
 
 
@@ -46,26 +46,19 @@ function windowLoad() {
     //document.getElementById("create").addEventListener("click", onCreate);
     //document.getElementById("forgotPass").addEventListener("click", onForgot);
     //document.getElementById("sendReset").addEventListener("click", onReset);
-    if(window.location.href.indexOf("main") > -1){
-        firebase.auth().onAuthStateChanged(function(user) {
-            if (user) {
-                // User is signed in.
-                //cur = user;
-                console.log('uid',user.uid);
-                document.getElementById('welcome').innerHTML = "Welcome, " + user.displayName;
-            } else {
-                // No user is signed in.
-                console.log("sample fail");
-            }               
-        });
         
-    }else{
+        
+   /* }else{
         firebase.auth().signOut().then(function() {
             console.log('Signed Out');
         }, function(error) {
             console.error('Sign Out Error', error);
         });
         //console.log(firebase.auth().currentUser.uid);
+    }*/
+
+    if(window.location.href.indexOf("main") > -1){
+        //document.getElementById('welcome').innerHTML = "Welcome, " + cur.displayName;
     }
 }
 
@@ -83,12 +76,14 @@ function onCreate() {
     .then(function(user){
         //console.log('uid',user.uid);
         var name = document.getElementById("nameID").value;
-        firebase.database().ref('users').child(user.uid).child(name).set(0);
+        firebase.database().ref('users').child(user.uid).child("score").set(0);
+        firebase.database().ref('users').child(user.uid).child("curQ").set(1);
         user.updateProfile({
             displayName: name      
         })
         .then(function() {
             console.log("display name updated");
+            window.location.href = "main.html";
         })
         .catch(function(error) {
             console.log("display name NOT updated");
@@ -157,8 +152,125 @@ function onReset(){
     });
 }
 
+firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+        // User is signed in.
+        //cur = user;
+        if(window.location.href.indexOf("main") > -1){
+            console.log('uid',user.uid);
+            mainPage(user);
+            //document.getElementById('welcome').innerHTML = "Welcome, " + user.displayName;
+        }else{
+            //window.location.href = "main.html";
+        }
+    } else {
+        // No user is signed in.
+        console.log("sample fail");
+    }               
+});
+
+function mainPage(user){
+    document.getElementById('welcome').innerHTML = "Welcome, " + user.displayName;
+    var scoreRef = firebase.database().ref('users/' + user.uid + '/score');//.child(user.uid).child();
+    var qRef = firebase.database().ref('users/' + user.uid + '/curQ');
+    scoreRef.on('value', function(snapshot) {
+        document.getElementById('score2').innerHTML = snapshot.val();
+    });
+    cur = user;
+    //qRef.
+}
+
+function signOut(){
+    firebase.auth().signOut()
+    .then(function() {
+            console.log('Signed Out');
+            window.location.href = "index.html";
+    }, function(error) {
+            console.error('Sign Out Error', error);
+    });
+}
+
+function startQuiz(){
+    document.getElementById('quizModal').style.display = "block";
+    firebase.database().ref('users/' + cur.uid + '/curQ').once('value', function(snapshot1){
+        console.log('curQ',snapshot1.val());
+        document.getElementById('qNo').innerHTML = snapshot1.val();
+        firebase.database().ref('questions/' + snapshot1.val()).once('value', function(snapshot2){
+            console.log(snapshot2.val());
+            document.getElementById('question').innerHTML = snapshot2.child('question').val();
+            document.getElementById('opt1').innerHTML = snapshot2.child('options').child(0).val();
+            document.getElementById('opt2').innerHTML = snapshot2.child('options').child(1).val();
+            document.getElementById('opt3').innerHTML = snapshot2.child('options').child(2).val();
+            document.getElementById('opt4').innerHTML = snapshot2.child('options').child(3).val();
+        });
+    });
+    
+/*    document.getElementById('startQuiz').innerHTML = "Continue Quiz";
+    var i = 0;
+    for(i = 1; i <= 10; i++){
+        var div = document.createElement('div');
+        div.className = 'modal';
+        div.id='m' + i;
+        div.innerHTML = '<div class="modal-content animate">\
+                            <div class="imgcontainer">\
+                                <span onclick="document.getElementById(\'id04\').style.display='none'" class="close" title="Close Modal">&times;</span>\
+                            </div>\
+                            <div class="container">\
+                                <label id="reset2"><b>An email containing password reset link has been sent to your email id </b></label>\
+                            </div>\
+                            <div class="container" style="background-color:#f1f1f1">\
+                                <button type="button" onclick="document.getElementById('id04').style.display='none'" class="cancelbtn">OKAY</button>\
+                            </div>\
+                        </div>';
+        document.getElementById("quizModals").appendChild();
+    }
+*/
+}
+
+function next(){
+    firebase.database().ref('users/' + cur.uid + '/curQ').once('value', function(snapshot1){
+        var radios = document.getElementsByName('options');
+
+        firebase.database().ref('answers/' + snapshot1.val()).once('value', function(snapshot3){
+                    //increase score if correct option selected
+            if (radios[snapshot3.val() - 1].checked){
+                firebase.database().ref('users/' + cur.uid + '/score').once('value', function(snapshot2){
+                    firebase.database().ref('users').child(cur.uid).child("score").set(snapshot2.val() + 1);
+                });
+            }
+        });
 
 
 
+        //increase currentQuestion count if not last question
+        if(snapshot1.val() != 10){
+            firebase.database().ref('users').child(cur.uid).child("curQ").set(snapshot1.val() + 1);
+            document.getElementById('qNo').innerHTML = snapshot1.val() + 1;
+            firebase.database().ref('questions/' + (snapshot1.val() + 1)).once('value', function(snapshot2){
+                document.getElementById('question').innerHTML = snapshot2.child('question').val();
+                document.getElementById('opt1').innerHTML = snapshot2.child('options').child(0).val();
+                document.getElementById('opt2').innerHTML = snapshot2.child('options').child(1).val();
+                document.getElementById('opt3').innerHTML = snapshot2.child('options').child(2).val();
+                document.getElementById('opt4').innerHTML = snapshot2.child('options').child(3).val();
+                firebase.database().ref('users/' + cur.uid + '/score').once('value', function(snapshot3){
+                    document.getElementById('score').innerHTML = snapshot3.val();
+                });
+
+            });
+
+        }else{
+            //when all questions are done
+            firebase.database().ref('users/' + cur.uid + '/score').once('value', function(snapshot3){
+                    document.getElementById('question').innerHTML = "Your final score is: " + snapshot3.val();
+                    document.getElementById('opt1').style.display = "none";
+                    document.getElementById('opt2').style.display = "none";
+                    document.getElementById('opt3').style.display = "none";
+                    document.getElementById('opt4').style.display = "none";
+                    document.getElementById('score').style.display = "none";
+            });
+        }
+
+    });
+}
 
 window.onload = windowLoad;

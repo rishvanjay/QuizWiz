@@ -192,6 +192,9 @@ function signOut(){
 
 function startQuiz(){
     document.getElementById('quizModal').style.display = "block";
+
+    //TODO: Before starting a new quiz, rollover question number from >=10 to 1
+
     firebase.database().ref('users/' + cur.uid + '/curQ').once('value', function(snapshot1){
         console.log('curQ',snapshot1.val());
         document.getElementById('qNo').innerHTML = snapshot1.val();
@@ -243,7 +246,7 @@ function next(){
 
 
         //increase currentQuestion count if not last question
-        if(snapshot1.val() != 10){
+        if(snapshot1.val() < 10){
             firebase.database().ref('users').child(cur.uid).child("curQ").set(snapshot1.val() + 1);
             document.getElementById('qNo').innerHTML = snapshot1.val() + 1;
             firebase.database().ref('questions/' + (snapshot1.val() + 1)).once('value', function(snapshot2){
@@ -262,11 +265,14 @@ function next(){
             //when all questions are done
             firebase.database().ref('users/' + cur.uid + '/score').once('value', function(snapshot3){
                     document.getElementById('question').innerHTML = "Your final score is: " + snapshot3.val();
+                    document.getElementById('answers').style.display = "none";
                     document.getElementById('opt1').style.display = "none";
                     document.getElementById('opt2').style.display = "none";
                     document.getElementById('opt3').style.display = "none";
                     document.getElementById('opt4').style.display = "none";
                     document.getElementById('score').style.display = "none";
+                    document.getElementById('submit').style.display = "none";
+                    //Don't serve up the buttons
             });
         }
 

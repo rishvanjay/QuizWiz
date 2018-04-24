@@ -1,6 +1,5 @@
 
 
-    
 var config = {
     apiKey: "AIzaSyCVPd3bcv8m0zyutS12R-YznD-huOEH_S4",
     authDomain: "quizwiz-dda60.firebaseapp.com",
@@ -173,11 +172,13 @@ function mainPage(user){
     document.getElementById('welcome').innerHTML = "Welcome, " + user.displayName;
     var scoreRef = firebase.database().ref('users/' + user.uid + '/score');//.child(user.uid).child();
     var qRef = firebase.database().ref('users/' + user.uid + '/curQ');
+    var tRef = firebase.database().ref('users/' + user.uid + '/totalTime');
     scoreRef.on('value', function(snapshot) {
         document.getElementById('score2').innerHTML = snapshot.val();
     });
     cur = user;
     //qRef.
+    //tRef.
 }
 
 function signOut(){
@@ -193,18 +194,28 @@ function signOut(){
 function startQuiz(){
     document.getElementById('quizModal').style.display = "block";
 
-    //TODO: Before starting a new quiz, rollover question number from >=10 to 1
+    //Serve up the current question if it's not submitted, the next if it is
 
     firebase.database().ref('users/' + cur.uid + '/curQ').once('value', function(snapshot1){
         console.log('curQ',snapshot1.val());
-        document.getElementById('qNo').innerHTML = snapshot1.val();
-        firebase.database().ref('questions/' + snapshot1.val()).once('value', function(snapshot2){
-            console.log(snapshot2.val());
-            document.getElementById('question').innerHTML = snapshot2.child('question').val();
-            document.getElementById('opt1').innerHTML = snapshot2.child('options').child(0).val();
-            document.getElementById('opt2').innerHTML = snapshot2.child('options').child(1).val();
-            document.getElementById('opt3').innerHTML = snapshot2.child('options').child(2).val();
-            document.getElementById('opt4').innerHTML = snapshot2.child('options').child(3).val();
+
+        //Look for question timestamp, and create one if there isn't one
+        var qnum = snapshot1.val();
+        firebase.database().ref('users/' + cur.uid + '/timestamp').once('value', function(snapshot2){
+            //TODO: Move timestamping logic to serverside
+            if (snapshot2.val() === null){
+                qnum++;
+                firebase.database().ref('users').child(cur.uid).child("score").set(snapshot2.val() + 1);
+                firebase.database().ref('users').child(cur.uid).child("timestamp").set();
+            }
+
+            document.getElementById('qNo').innerHTML = qnum;
+
+            if(snapshot1.val() < 10){
+                displayQuestions(snapshot1);
+            }else{
+                displayFinished(snapshot1);
+            }
         });
     });
     
@@ -235,16 +246,22 @@ function next(){
         var radios = document.getElementsByName('options');
 
         firebase.database().ref('answers/' + snapshot1.val()).once('value', function(snapshot3){
-                    //increase score if correct option selected
+            //increase score if correct option selected
             if (radios[snapshot3.val() - 1].checked){
                 firebase.database().ref('users/' + cur.uid + '/score').once('value', function(snapshot2){
                     firebase.database().ref('users').child(cur.uid).child("score").set(snapshot2.val() + 1);
                 });
             }
         });
+        document.getElementById('qNo').innerHTML = snapshot1.val() + 1;
 
+        if(snapshot1.val() < 10){
+            displayQuestions(snapshot1);
+        }else{
+            displayFinished(snapshot1);
+        }
 
-
+        /*
         //increase currentQuestion count if not last question
         if(snapshot1.val() < 10){
             firebase.database().ref('users').child(cur.uid).child("curQ").set(snapshot1.val() + 1);
@@ -275,8 +292,43 @@ function next(){
                     //Don't serve up the buttons
             });
         }
+        */
 
     });
 }
+
+function displayQuestions(snapshot1) {
+    var radios = document.getElementsByName('options');
+    document.getElementById('qNo').innerHTML = snapshot1.val() + 1;
+    document.getElementById('submit').style.display = "inline";
+    document.getElementById('saveclose').style.display = "inline";
+    firebase.database().ref('questions/' + (snapshot1.val()+1)).once('value', function(snapshot2){
+        document.getElementById('question').innerHTML = snapshot2.child('question').val();
+        document.getElementById('opt1').innerHTML = snapshot2.child('options').child(0).val();
+        document.getElementById('opt2').innerHTML = snapshot2.child('options').child(1).val();
+        document.getElementById('opt3').innerHTML = snapshot2.child('options').child(2).val();
+        document.getElementById('opt4').innerHTML = snapshot2.child('options').child(3).val();
+        firebase.database().ref('users/' + cur.uid + '/score').once('value', function(snapshot3){
+            document.getElementById('score').innerHTML = snapshot3.val();
+        });
+
+    });
+}
+
+function displayFinished(snapshot1) {
+    firebase.database().ref('users/' + cur.uid + '/score').once('value', function(snapshot2){
+        document.getElementById('question').innerHTML = "Your final score is: " + snapshot2.val();
+        document.getElementById('answers').style.display = "none";
+        document.getElementById('opt1').style.display = "none";
+        document.getElementById('opt2').style.display = "none";
+        document.getElementById('opt3').style.display = "none";
+        document.getElementById('opt4').style.display = "none";
+        document.getElementById('score').style.display = "none";
+        document.getElementById('submit').style.display = "none";
+        document.getElementById('saveclose').style.display = "none";
+    });
+}
+
+
 
 window.onload = windowLoad;

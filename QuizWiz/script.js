@@ -9,7 +9,7 @@ var config = {
     storageBucket: "quizwiz-dda60.appspot.com",
     messagingSenderId: "429794970466"
   };
-  firebase.initializeApp(config);
+firebase.initializeApp(config);
 
 
 
@@ -57,7 +57,8 @@ function windowLoad() {
         //console.log(firebase.auth().currentUser.uid);
     }*/
 
-    if(window.location.href.indexOf("main") > -1){
+    if(window.location.href.indexOf("leader") > -1){
+        leaderBoard();
         //document.getElementById('welcome').innerHTML = "Welcome, " + cur.displayName;
     }
 }
@@ -78,6 +79,7 @@ function onCreate() {
         var name = document.getElementById("nameID").value;
         firebase.database().ref('users').child(user.uid).child("score").set(0);
         firebase.database().ref('users').child(user.uid).child("curQ").set(1);
+        firebase.database().ref('users').child(user.uid).child("name").set(name);
         user.updateProfile({
             displayName: name      
         })
@@ -243,7 +245,7 @@ function next(){
 
 
         //increase currentQuestion count if not last question
-        if(snapshot1.val() != 10){
+        if(snapshot1.val() < 10){
             firebase.database().ref('users').child(cur.uid).child("curQ").set(snapshot1.val() + 1);
             document.getElementById('qNo').innerHTML = snapshot1.val() + 1;
             firebase.database().ref('questions/' + (snapshot1.val() + 1)).once('value', function(snapshot2){
@@ -270,6 +272,35 @@ function next(){
             });
         }
 
+    });
+}
+
+function leaderBoard(){
+    //window.location.href="leaderBoard.html";
+    var scores = new Array();
+    firebase.database().ref('users').once('value', function(snapshot){
+        console.log(snapshot.val());
+        snapshot.forEach(function(child){
+            var obj = {};
+            obj['name'] = child.child('name').val()
+            obj['score'] = child.child('score').val();     
+            scores.push(obj);
+        });
+        console.log('scores before sorting',scores);
+        scores = scores.sort(function(a,b){
+            console.log(a.score,b.score);
+            return b.score - a.score;
+        });
+        scores.forEach(function(element){
+            var table = document.getElementById('leaderTable');
+            var row = table.insertRow(-1);
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            cell1.innerHTML = element.name;
+            cell2.innerHTML = element.score;
+        });
+        console.log('after sorting',scores);
+        
     });
 }
 

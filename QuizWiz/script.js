@@ -300,6 +300,23 @@ function next(){
     });
 }
 
+function saveClose() {
+    var radios = document.getElementsByName('options');
+
+    firebase.database().ref('answers/' + snapshot1.val()).once('value', function(snapshot3){
+        //increase score if correct option selected
+        if (radios[snapshot3.val() - 1].checked){
+            firebase.database().ref('users/' + cur.uid + '/score').once('value', function(snapshot2){
+                firebase.database().ref('users').child(cur.uid).child("score").set(snapshot2.val() + 1);
+            });
+        }
+        firebase.database().ref('users/' + cur.uid + '/timestamp').once('value', function(snapshot2){
+            firebase.database().ref('users').child(cur.uid).child("timestamp").set(null);
+            document.getElementById('quizModal').style.display='none';
+        });
+    });
+}
+
 function displayQuestions(snapshot1) {
     var radios = document.getElementsByName('options');
     document.getElementById('qNo').innerHTML = snapshot1.val() + 1;

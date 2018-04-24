@@ -200,13 +200,12 @@ function startQuiz(){
         console.log('curQ',snapshot1.val());
 
         //Look for question timestamp, and create one if there isn't one
-        var qnum = snapshot1.val();
         firebase.database().ref('users/' + cur.uid + '/timestamp').once('value', function(snapshot2){
-            //TODO: Move timestamping logic to serverside
+            var qnum = snapshot1.val();
             if (snapshot2.val() === null){
                 qnum++;
-                firebase.database().ref('users').child(cur.uid).child("score").set(snapshot2.val() + 1);
-                firebase.database().ref('users').child(cur.uid).child("timestamp").set();
+                firebase.database().ref('users').child(cur.uid).child("curQ").set(snapshot2.val() + 1);
+                firebase.database().ref('users').child(cur.uid).child("timestamp").set(new Date());
             }
 
             document.getElementById('qNo').innerHTML = qnum;
@@ -252,14 +251,18 @@ function next(){
                     firebase.database().ref('users').child(cur.uid).child("score").set(snapshot2.val() + 1);
                 });
             }
+            firebase.database().ref('users/' + cur.uid + '/timestamp').once('value', function(snapshot2){
+                firebase.database().ref('users').child(cur.uid).child("timestamp").set(new Date());
+                firebase.database().ref('users').child(cur.uid).child("curQ").set(snapshot1.val() + 1);
+                document.getElementById('qNo').innerHTML = snapshot1.val() + 1;
+    
+                if(snapshot1.val() < 10){
+                    displayQuestions(snapshot1);
+                }else{
+                    displayFinished(snapshot1);
+                }
+            });
         });
-        document.getElementById('qNo').innerHTML = snapshot1.val() + 1;
-
-        if(snapshot1.val() < 10){
-            displayQuestions(snapshot1);
-        }else{
-            displayFinished(snapshot1);
-        }
 
         /*
         //increase currentQuestion count if not last question

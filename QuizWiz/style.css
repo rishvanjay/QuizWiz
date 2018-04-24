@@ -10,6 +10,9 @@ input[type=text], input[type=password] {
     box-sizing: border-box;
 }
 
+th{
+    text-align: center;
+}
 /* Set a style for all buttons */
 button {
     background-color: #4CAF50;

@@ -6,15 +6,16 @@
         <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-app.js"></script>  
     	<script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-auth.js"></script>  
     	<script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-database.js"></script>
+        <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Josefin+Slab">
     	
     </head>
     <body>
 
         <img id="trivia"src="trivia.png">
-        <img id="logo"src="logo.png">
+        <img id="logo"src="logo.png" border="1">
         <!-- <center><h2 id="head">QuizWiz - Your Online Trivia Game!</h2></center> -->
-        <center><button onclick="document.getElementById('id02').style.display='block'" style="width:auto;">Create Account</button></center>
-        <center><button onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Login</button></center>
+        <center><button onclick="document.getElementById('id01').style.display='block'" style="width:auto;margin-top: 2%;font-family: 'Josefin Slab';width:10%;"><b>Login</b></button></center>
+        <center><button onclick="document.getElementById('id02').style.display='block'" style="width:auto;margin-top: 5%;font-family: 'Josefin Slab';"><b>Create Account</b></button></center>
 
     <div id="id01" class="modal">
     
@@ -31,13 +32,13 @@
         <label  for="psw"><b>Password</b></label>
         <input id="pwd" type="password" placeholder="Enter Password" name="psw" required>
             
-        <button id="login" onclick="onLogin()">Login</button>
+        <button id="login" onclick="onLogin()" style="font-family: 'Josefin Slab';font-weight: bold;">Login</button>
         
         </div>
 
         <div class="container" style="background-color:#f1f1f1">
-        <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
-        <button type="button" id="forgotPass" onclick="onForgot()">Forgot Password</button>
+        <button type="button" style="font-family: 'Josefin Slab';font-weight: bold;" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+        <button type="button" style="font-family: 'Josefin Slab';font-weight: bold;" id="forgotPass" onclick="onForgot()">Forgot Password</button>
         </div>
     </div>
     </div>
@@ -59,12 +60,12 @@
         <label for="nam"><b>Please Enter your name below</b></label>
         <input id="nameID" type="text" placeholder="Enter Name" name="name" required>
             
-        <button id="create" onclick="onCreate()">Create Account</button>
+        <button id="create" onclick="onCreate()" style="font-family: 'Josefin Slab';font-weight: bold;">Create Account</button>
         
         </div>
 
         <div class="container" style="background-color:#f1f1f1">
-        <button type="button" onclick="document.getElementById('id02').style.display='none'" class="cancelbtn">Cancel</button>
+        <button type="button" style="font-family: 'Josefin Slab';font-weight: bold;" onclick="document.getElementById('id02').style.display='none'" class="cancelbtn">Cancel</button>
         </div>
     </div>
     </div>
@@ -80,11 +81,11 @@
     		<div class="container">
     		    <label for="uname"><b>Email</b></label>
     		    <input id="uname3" type="text" placeholder="Enter email" name="uname" required>
-    		    <button id="sendReset" onclick="onReset()">Send reset password mail</button>   
+    		    <button id="sendReset" style="font-family: 'Josefin Slab';font-weight: bold;" onclick="onReset()">Send reset password mail</button>   
     		</div>
 
     		<div class="container" style="background-color:#f1f1f1">
-    		    <button type="button" onclick="document.getElementById('id03').style.display='none'" class="cancelbtn">Cancel</button>
+    		    <button type="button" style="font-family: 'Josefin Slab';font-weight: bold;" onclick="document.getElementById('id03').style.display='none'" class="cancelbtn">Cancel</button>
     		</div>
 
     	</div>
@@ -103,7 +104,7 @@
     		</div>
 
     		<div class="container" style="background-color:#f1f1f1">
-    		    <button type="button" onclick="document.getElementById('id04').style.display='none'" class="cancelbtn">OKAY</button>
+    		    <button type="button" style="font-family: 'Josefin Slab';font-weight: bold;" onclick="document.getElementById('id04').style.display='none'" class="cancelbtn">OKAY</button>
     		</div>
 
     	</div>	

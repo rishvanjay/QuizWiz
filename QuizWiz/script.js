@@ -182,7 +182,7 @@ function mainPage(user){
     firebase.database().ref('users/' + cur.uid + '/curQ').once('value', function(snapshot1){
         console.log('curQ',snapshot1.val());
         const cur_count = snapshot1.val();
-        if(cur_count > 10) {
+        if(cur_count > 9) {
             console.log("disabling");
             disableQuiz();
         }
@@ -201,8 +201,9 @@ function signOut(){
 }
 
 function disableQuiz() {
-    document.getElementById('startQuiz').disabled = true;
-    document.getElementById('startQuiz').style.display = true;
+    // document.getElementById('startQuiz').disabled = true;
+    // document.getElementById('startQuiz').style.visibility = 'hidden';
+    document.getElementById('question').innerHTML = "Your final score is: " + snapshot3.val();
 
 }
 
@@ -214,9 +215,10 @@ function startQuiz(){
     firebase.database().ref('users/' + cur.uid + '/curQ').once('value', function(snapshot1){
         console.log('curQ',snapshot1.val());
         const cur_count = snapshot1.val();
-        if(cur_count) {
+        if(cur_count > 9) {
             console.log("disabling");
             disableQuiz();
+            return;
         }
 // // <<<<<<< eaglgenes101
 

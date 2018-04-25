@@ -179,6 +179,14 @@ function mainPage(user){
         document.getElementById('score2').innerHTML = snapshot.val();
     });
     cur = user;
+    firebase.database().ref('users/' + cur.uid + '/curQ').once('value', function(snapshot1){
+        console.log('curQ',snapshot1.val());
+        const cur_count = snapshot1.val();
+        if(cur_count > 10) {
+            console.log("disabling");
+            disableQuiz();
+        }
+    });
     //qRef.
 }
 
@@ -192,6 +200,10 @@ function signOut(){
     });
 }
 
+function disableQuiz() {
+    document.getElementById('startQuiz').disabled = true;
+}
+
 function startQuiz(){
     document.getElementById('quizModal').style.display = "block";
 
@@ -199,6 +211,11 @@ function startQuiz(){
 
     firebase.database().ref('users/' + cur.uid + '/curQ').once('value', function(snapshot1){
         console.log('curQ',snapshot1.val());
+        const cur_count = snapshot1.val();
+        if(cur_count) {
+            console.log("disabling");
+            disableQuiz();
+        }
 // // <<<<<<< eaglgenes101
 
 //         //Look for question timestamp, and create one if there isn't one

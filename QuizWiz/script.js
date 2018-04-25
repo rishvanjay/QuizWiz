@@ -203,17 +203,25 @@ function startQuiz(){
         firebase.database().ref('users/' + cur.uid + '/timestamp').once('value', function(snapshot2){
             var qnum = snapshot1.val();
             if (snapshot2.val() === null){
-                qnum++;
-                firebase.database().ref('users').child(cur.uid).child("curQ").set(snapshot2.val() + 1);
+                if (snapshot1.val() >= 10)
+                {
+                    qnum = 1;
+                    firebase.database().ref('users').child(cur.uid).child("curQ").set(1); 
+                }
+                else
+                {
+                    qnum++;
+                    firebase.database().ref('users').child(cur.uid).child("curQ").set(snapshot1.val() + 1);
+                }
                 firebase.database().ref('users').child(cur.uid).child("timestamp").set(new Date());
             }
 
-            document.getElementById('qNo').innerHTML = qnum;
+            //document.getElementById('qNo').innerHTML = qnum;
 
-            if(snapshot1.val() < 10){
-                displayQuestions(snapshot1);
+            if(qnum < 10){
+                displayQuestions(qnum);
             }else{
-                displayFinished(snapshot1);
+                displayFinished();
             }
         });
     });
@@ -257,9 +265,9 @@ function next(){
                 document.getElementById('qNo').innerHTML = snapshot1.val() + 1;
     
                 if(snapshot1.val() < 10){
-                    displayQuestions(snapshot1);
+                    displayQuestions(snapshot1.val()+1);
                 }else{
-                    displayFinished(snapshot1);
+                    displayFinished();
                 }
             });
         });
@@ -319,12 +327,15 @@ function saveClose(){
 
 }
 
-function displayQuestions(snapshot1) {
+function displayQuestions(qnum) {
     var radios = document.getElementsByName('options');
-    document.getElementById('qNo').innerHTML = snapshot1.val() + 1;
+    document.getElementById('qNo').innerHTML = qnum;
     document.getElementById('submit').style.display = "inline";
     document.getElementById('saveclose').style.display = "inline";
-    firebase.database().ref('questions/' + (snapshot1.val()+1)).once('value', function(snapshot2){
+    document.getElementById('answers').style.display = "inline";
+    document.getElementById('score').style.display = "inline";
+    document.getElementById('headlabels').style.display = "inline";
+    firebase.database().ref('questions/' + qnum).once('value', function(snapshot2){
         document.getElementById('question').innerHTML = snapshot2.child('question').val();
         document.getElementById('opt1').innerHTML = snapshot2.child('options').child(0).val();
         document.getElementById('opt2').innerHTML = snapshot2.child('options').child(1).val();
@@ -337,14 +348,11 @@ function displayQuestions(snapshot1) {
     });
 }
 
-function displayFinished(snapshot1) {
+function displayFinished() {
     firebase.database().ref('users/' + cur.uid + '/score').once('value', function(snapshot2){
         document.getElementById('question').innerHTML = "Your final score is: " + snapshot2.val();
         document.getElementById('answers').style.display = "none";
-        document.getElementById('opt1').style.display = "none";
-        document.getElementById('opt2').style.display = "none";
-        document.getElementById('opt3').style.display = "none";
-        document.getElementById('opt4').style.display = "none";
+        document.getElementById('headlabels').style.display = "none";
         document.getElementById('score').style.display = "none";
         document.getElementById('submit').style.display = "none";
         document.getElementById('saveclose').style.display = "none";

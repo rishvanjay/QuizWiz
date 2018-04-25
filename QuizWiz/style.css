@@ -109,11 +109,18 @@ button:hover {
 
 #trivia{
     padding-top: 5%;
-    margin-left: 10%;
-    width: 80%;
+    margin-left: 35%;
+    width: 30%;
 }
-#signOut{
 
+#logo{
+    margin-left: 34.7%;
+    width: 30%;
+
+}
+
+#signOut{
+    float: right;
     width: 10%;
     margin-left: 90%;
 }

@@ -215,11 +215,11 @@ function startQuiz(){
     firebase.database().ref('users/' + cur.uid + '/curQ').once('value', function(snapshot1){
         console.log('curQ',snapshot1.val());
         const cur_count = snapshot1.val();
-        if(cur_count > 9) {
-            console.log("disabling");
-            disableQuiz();
-            return;
-        }
+        // if(cur_count > 9) {
+        //     console.log("disabling");
+        //     disableQuiz();
+        //     return;
+        // }
 // // <<<<<<< eaglgenes101
 
 //         //Look for question timestamp, and create one if there isn't one

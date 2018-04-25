@@ -1,5 +1,6 @@
 
 
+    
 var config = {
     apiKey: "AIzaSyCVPd3bcv8m0zyutS12R-YznD-huOEH_S4",
     authDomain: "quizwiz-dda60.firebaseapp.com",
@@ -8,7 +9,7 @@ var config = {
     storageBucket: "quizwiz-dda60.appspot.com",
     messagingSenderId: "429794970466"
   };
-  firebase.initializeApp(config);
+firebase.initializeApp(config);
 
 
 
@@ -56,7 +57,8 @@ function windowLoad() {
         //console.log(firebase.auth().currentUser.uid);
     }*/
 
-    if(window.location.href.indexOf("main") > -1){
+    if(window.location.href.indexOf("leader") > -1){
+        leaderBoard();
         //document.getElementById('welcome').innerHTML = "Welcome, " + cur.displayName;
     }
 }
@@ -77,6 +79,7 @@ function onCreate() {
         var name = document.getElementById("nameID").value;
         firebase.database().ref('users').child(user.uid).child("score").set(0);
         firebase.database().ref('users').child(user.uid).child("curQ").set(1);
+        firebase.database().ref('users').child(user.uid).child("name").set(name);
         user.updateProfile({
             displayName: name      
         })
@@ -172,13 +175,11 @@ function mainPage(user){
     document.getElementById('welcome').innerHTML = "Welcome, " + user.displayName;
     var scoreRef = firebase.database().ref('users/' + user.uid + '/score');//.child(user.uid).child();
     var qRef = firebase.database().ref('users/' + user.uid + '/curQ');
-    var tRef = firebase.database().ref('users/' + user.uid + '/totalTime');
     scoreRef.on('value', function(snapshot) {
         document.getElementById('score2').innerHTML = snapshot.val();
     });
     cur = user;
     //qRef.
-    //tRef.
 }
 
 function signOut(){
@@ -194,10 +195,11 @@ function signOut(){
 function startQuiz(){
     document.getElementById('quizModal').style.display = "block";
 
-    //Serve up the current question if it's not submitted, the next if it is
+    //TODO: Before starting a new quiz, rollover question number from >=10 to 1
 
     firebase.database().ref('users/' + cur.uid + '/curQ').once('value', function(snapshot1){
         console.log('curQ',snapshot1.val());
+// <<<<<<< eaglgenes101
 
         //Look for question timestamp, and create one if there isn't one
         firebase.database().ref('users/' + cur.uid + '/timestamp').once('value', function(snapshot2){
@@ -223,6 +225,16 @@ function startQuiz(){
             }else{
                 displayFinished();
             }
+
+//         document.getElementById('qNo').innerHTML = snapshot1.val();
+//         firebase.database().ref('questions/' + snapshot1.val()).once('value', function(snapshot2){
+//             console.log(snapshot2.val());
+//             document.getElementById('question').innerHTML = snapshot2.child('question').val();
+//             document.getElementById('opt1').innerHTML = snapshot2.child('options').child(0).val();
+//             document.getElementById('opt2').innerHTML = snapshot2.child('options').child(1).val();
+//             document.getElementById('opt3').innerHTML = snapshot2.child('options').child(2).val();
+//             document.getElementById('opt4').innerHTML = snapshot2.child('options').child(3).val();
+
         });
     });
     
@@ -253,12 +265,13 @@ function next(){
         var radios = document.getElementsByName('options');
 
         firebase.database().ref('answers/' + snapshot1.val()).once('value', function(snapshot3){
-            //increase score if correct option selected
+                    //increase score if correct option selected
             if (radios[snapshot3.val() - 1].checked){
                 firebase.database().ref('users/' + cur.uid + '/score').once('value', function(snapshot2){
                     firebase.database().ref('users').child(cur.uid).child("score").set(snapshot2.val() + 1);
                 });
             }
+
             firebase.database().ref('users/' + cur.uid + '/timestamp').once('value', function(snapshot2){
                 firebase.database().ref('users').child(cur.uid).child("timestamp").set(new Date());
                 firebase.database().ref('users').child(cur.uid).child("curQ").set(snapshot1.val() + 1);
@@ -270,9 +283,11 @@ function next(){
                     displayFinished();
                 }
             });
+
         });
 
-        /*
+
+
         //increase currentQuestion count if not last question
         if(snapshot1.val() < 10){
             firebase.database().ref('users').child(cur.uid).child("curQ").set(snapshot1.val() + 1);
@@ -303,10 +318,10 @@ function next(){
                     //Don't serve up the buttons
             });
         }
-        */
 
     });
 }
+
 
 function saveClose(){
     var radios = document.getElementsByName('options');
@@ -359,6 +374,35 @@ function displayFinished() {
     });
 }
 
+
+function leaderBoard(){
+    //window.location.href="leaderBoard.html";
+    var scores = new Array();
+    firebase.database().ref('users').once('value', function(snapshot){
+        console.log(snapshot.val());
+        snapshot.forEach(function(child){
+            var obj = {};
+            obj['name'] = child.child('name').val()
+            obj['score'] = child.child('score').val();     
+            scores.push(obj);
+        });
+        console.log('scores before sorting',scores);
+        scores = scores.sort(function(a,b){
+            console.log(a.score,b.score);
+            return b.score - a.score;
+        });
+        scores.forEach(function(element){
+            var table = document.getElementById('leaderTable');
+            var row = table.insertRow(-1);
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            cell1.innerHTML = element.name;
+            cell2.innerHTML = element.score;
+        });
+        console.log('after sorting',scores);
+        
+    });
+}
 
 
 window.onload = windowLoad;

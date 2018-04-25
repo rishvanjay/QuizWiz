@@ -202,7 +202,8 @@ function signOut(){
 
 function disableQuiz() {
     document.getElementById('startQuiz').disabled = true;
-    document.getElementById('startQuiz').hidden = true;
+    document.getElementById('startQuiz').style.display = true;
+
 }
 
 function startQuiz(){

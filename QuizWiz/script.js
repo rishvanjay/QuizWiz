@@ -367,7 +367,7 @@ function displayQuestions(qnum) {
     var radios = document.getElementsByName('options');
     document.getElementById('qNo').innerHTML = qnum;
     document.getElementById('submit').style.display = "inline";
-    document.getElementById('saveclose').style.display = "inline";
+    // document.getElementById('saveclose').style.display = "inline";
     document.getElementById('answers').style.display = "inline";
     document.getElementById('score').style.display = "inline";
     document.getElementById('headlabels').style.display = "inline";
@@ -391,7 +391,7 @@ function displayFinished() {
         document.getElementById('headlabels').style.display = "none";
         document.getElementById('score').style.display = "none";
         document.getElementById('submit').style.display = "none";
-        document.getElementById('saveclose').style.display = "none";
+        // document.getElementById('saveclose').style.display = "none";
     });
 }
 

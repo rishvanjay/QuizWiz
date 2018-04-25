@@ -36,7 +36,6 @@ button:hover {
     background-color: #f44336;
 }
 
-#
 
 #forgotPass{
     width: 20%;
@@ -51,34 +50,77 @@ button:hover {
 }
 
 #welcome{
-    margin-left: 30%;
+    margin-left: 0%;
     font-size: 50px;
+    text-align: center;
 }
 
 #score1{
-    width: 40%;
-    margin-left: 10%;
-    float: left;
+    width: 0%;
+    margin-left: 0%;
     text-align: center;
 }
 
 #score2{
-    width: 40%;
-    margin-right: 10%;
+    width: 0%;
+    margin-right: 0%;
     text-align: center;
 }
 
 #score0{
     padding-top: 5%;
     width: 100%;
+    text-align: center;
 }
 
 #startQuiz{
-    margin-top: 20%;
+
     width: 30%;
     margin-left: 35%;
 }
 
+#leaderboard{
+    width: 30%;
+    margin-left: 35%;
+}
+
+#leaderTable {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 80%;
+}
+
+#leaderTable td, #leaderTable th{
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#leaderTable tr:nth-child(even){background-color: #f2f2f2;}
+
+#leaderTable tr:hover {background-color: #ddd;}
+
+#leaderTable th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #4CAF50;
+    color: white;
+}
+
+#trivia{
+    padding-top: 5%;
+    margin-left: 10%;
+    width: 80%;
+}
+#signOut{
+
+    width: 10%;
+    margin-left: 90%;
+}
+
+#head{
+    color: #4CAF50;
+}
 .radio{
     float: left;
     margin-left: 5%;

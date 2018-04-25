@@ -6,26 +6,29 @@
         <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-app.js"></script>  
     	<script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-auth.js"></script>  
     	<script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-database.js"></script>
+        <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Josefin+Slab">
 
     </head>
-    <body>
+    <body style="font-family: 'Josefin Slab';font-weight: bold;">
         <button id="signOut" onclick="signOut()">Sign Out</button>
-        <img id="logo"src="logo.png">
+        <img id="logo"src="logo.png" border="1">
     	<div id="welcome"></div>
         
         <div id="score0">
-            <label id="score1"><b>Your Score:</b></label>
-            <label id="score2"><b></b></label>
+            <label id="score1" style="font-size: 40px;"><b>Your Score:</b></label>
+            <label id="score2" style="font-size: 40px;"><b></b></label>
         </div>
         <button id="startQuiz" onclick="startQuiz()">Start Quiz</button>
         <div id="quizModal" class="modal">
             <div class="modal-content animate">
                 <div class="container" id="headlabels">
-                    <b>Question: <div id="qNo">0</div></b>
-                    <b>Score: <div id="score">0</div></b>
+                    <div style="float: left; font-size: 25px;"><b style="float: left;">Question:&nbsp; </b><div id="qNo" style="float: right;"><b>0</b></div></div>
+                    <div style="float: right; font-size: 28px;"><b style="float: left;">Score:&nbsp;</b><div id="score" style="float: right;"><b>0</b></div></div>
                 </div>
+            </br>
                 <div class="container">
-                    <div><label id="question"></label></div>
+                    <div><label id="question" style="font-size: 30px;"></label></div>
+                    </br>
                     <form action="" id="answers">
                         <input type="radio" name="options" value="1" class="radio"><div id="opt1" class="radioOpt"></div><br>
                         <input type="radio" name="options" value="2" class="radio"><div id="opt2" class="radioOpt"></div><br>
@@ -34,8 +37,8 @@
                     </form>
                 </div>
                 <div class="container" style="background-color:#f1f1f1">
-                    <button type="button" onclick="document.getElementById('quizModal').style.display='none'" class="cancelbtn">Close</button>
                     <button type="button" onclick="next()" class="cancelbtn" id="submit">Submit</button>
+                    <button type="button" onclick="document.getElementById('quizModal').style.display='none'" class="cancelbtn" style="float: right;">Close</button>
                 </div>
             </div>  
         </div>

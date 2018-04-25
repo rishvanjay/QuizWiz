@@ -1,4 +1,7 @@
-body {font-family: Arial, Helvetica, sans-serif;}
+body {
+    font-family: 'Josefin Slab',Arial, Helvetica, sans-serif;
+    background: url(bg-7-full.jpg) repeat 0 0;
+}
 
 /* Full-width input fields */
 input[type=text], input[type=password] {
@@ -22,6 +25,8 @@ button {
     border: none;
     cursor: pointer;
     width: 100%;
+    border-radius:50px;
+    font-size: 20px;
 }
 
 button:hover {
@@ -73,6 +78,12 @@ button:hover {
     text-align: center;
 }
 
+#lbheading{
+    font-family: 'Josefin Slab';
+    margin-left: 37%;
+    font-size: 70px; 
+}
+
 #startQuiz{
 
     width: 30%;
@@ -85,17 +96,23 @@ button:hover {
 }
 
 #leaderTable {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-family: 'Josefin Slab',"Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     width: 80%;
+    background-color: white;
+    margin-left: 10%;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 10%;
+    text-align: center;
 }
 
 #leaderTable td, #leaderTable th{
     border: 1px solid #ddd;
-    padding: 8px;
+    padding: 16px;
 }
 
-#leaderTable tr:nth-child(even){background-color: #f2f2f2;}
+
 
 #leaderTable tr:hover {background-color: #ddd;}
 
@@ -114,15 +131,16 @@ button:hover {
 }
 
 #logo{
-    margin-left: 34.7%;
+    margin-left: 34%;
     width: 30%;
+    border-width: 10px;
+    border-color: black;
 
 }
 
 #signOut{
-    float: right;
     width: 10%;
-    margin-left: 90%;
+    margin-left: 80%;
 }
 
 #head{
@@ -135,6 +153,7 @@ button:hover {
 
 .radioOpt{
     margin-left: 10%;
+    font-size: 20px;
 }
 /* Center the image and position the close button */
 .imgcontainer {
@@ -151,6 +170,7 @@ img.avatar {
 
 .container {
     padding: 16px;
+    border-radius: 15px;
 }
 
 span.psw {
@@ -171,6 +191,7 @@ span.psw {
     background-color: rgb(0,0,0); /* Fallback color */
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
     padding-top: 60px;
+    border-radius: 15px;
 }
 
 /* Modal Content/Box */
@@ -178,7 +199,8 @@ span.psw {
     background-color: #fefefe;
     margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
     border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
+    width: 60%; /* Could be more or less, depending on screen size */
+    border-radius: 15px;
 }
 
 /* The Close Button (x) */

@@ -199,41 +199,41 @@ function startQuiz(){
 
     firebase.database().ref('users/' + cur.uid + '/curQ').once('value', function(snapshot1){
         console.log('curQ',snapshot1.val());
-// <<<<<<< eaglgenes101
+// // <<<<<<< eaglgenes101
 
-        //Look for question timestamp, and create one if there isn't one
-        firebase.database().ref('users/' + cur.uid + '/timestamp').once('value', function(snapshot2){
-            var qnum = snapshot1.val();
-            if (snapshot2.val() === null){
-                if (snapshot1.val() >= 10)
-                {
-                    qnum = 1;
-                    firebase.database().ref('users').child(cur.uid).child("curQ").set(1); 
-                }
-                else
-                {
-                    qnum++;
-                    firebase.database().ref('users').child(cur.uid).child("curQ").set(snapshot1.val() + 1);
-                }
-                firebase.database().ref('users').child(cur.uid).child("timestamp").set(new Date());
-            }
+//         //Look for question timestamp, and create one if there isn't one
+//         firebase.database().ref('users/' + cur.uid + '/timestamp').once('value', function(snapshot2){
+//             var qnum = snapshot1.val();
+//             if (snapshot2.val() === null){
+//                 if (snapshot1.val() >= 10)
+//                 {
+//                     qnum = 1;
+//                     firebase.database().ref('users').child(cur.uid).child("curQ").set(1); 
+//                 }
+//                 else
+//                 {
+//                     qnum++;
+//                     firebase.database().ref('users').child(cur.uid).child("curQ").set(snapshot1.val() + 1);
+//                 }
+//                 firebase.database().ref('users').child(cur.uid).child("timestamp").set(new Date());
+//             }
 
-            //document.getElementById('qNo').innerHTML = qnum;
+//             //document.getElementById('qNo').innerHTML = qnum;
 
-            if(qnum < 10){
-                displayQuestions(qnum);
-            }else{
-                displayFinished();
-            }
+//             if(qnum < 10){
+//                 displayQuestions(qnum);
+//             }else{
+//                 displayFinished();
+//             }
 
-//         document.getElementById('qNo').innerHTML = snapshot1.val();
-//         firebase.database().ref('questions/' + snapshot1.val()).once('value', function(snapshot2){
-//             console.log(snapshot2.val());
-//             document.getElementById('question').innerHTML = snapshot2.child('question').val();
-//             document.getElementById('opt1').innerHTML = snapshot2.child('options').child(0).val();
-//             document.getElementById('opt2').innerHTML = snapshot2.child('options').child(1).val();
-//             document.getElementById('opt3').innerHTML = snapshot2.child('options').child(2).val();
-//             document.getElementById('opt4').innerHTML = snapshot2.child('options').child(3).val();
+        document.getElementById('qNo').innerHTML = snapshot1.val();
+        firebase.database().ref('questions/' + snapshot1.val()).once('value', function(snapshot2){
+            console.log(snapshot2.val());
+            document.getElementById('question').innerHTML = snapshot2.child('question').val();
+            document.getElementById('opt1').innerHTML = snapshot2.child('options').child(0).val();
+            document.getElementById('opt2').innerHTML = snapshot2.child('options').child(1).val();
+            document.getElementById('opt3').innerHTML = snapshot2.child('options').child(2).val();
+            document.getElementById('opt4').innerHTML = snapshot2.child('options').child(3).val();
 
         });
     });
